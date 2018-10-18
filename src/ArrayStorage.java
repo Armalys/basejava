@@ -5,20 +5,24 @@ import java.util.Arrays;
  */
 
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size = 0;
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    void save(Resume r) {
-        if (!Arrays.asList(storage).contains(r)) {
-            storage[size] = r;
-            size++;
+    void save(Resume resume) {
+        if (size > 10_000) {
+            System.out.println("Storage is full");
         } else {
-            System.out.println("Resume already in storage");
+            if (!Arrays.asList(storage).contains(resume)) {
+                storage[size] = resume;
+                size++;
+            } else {
+                System.out.println("Resume already in storage");
+            }
         }
     }
 
@@ -31,23 +35,18 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        if (isCheckInStorage(uuid)) {
-            for (int i = 0; i < size; ++i) {
-                if (uuid.equals(storage[i].uuid)) {
-                    return storage[i];
-                }
-                break;
-            }
+        if (isCheckInStorage(uuid) != null) {
+            return isCheckInStorage(uuid);
         } else {
             System.out.println("Resume not in storage");
+            return null;
         }
-        return null;
     }
 
     void delete(String uuid) {
-        if (isCheckInStorage(uuid)) {
+        if (isCheckInStorage(uuid) != null) {
             for (int i = 0; i < size; i++) {
-                if (uuid.equals(storage[i].uuid)) {
+                if (uuid.equals(storage[i].getUuid())) {
                     storage[i] = storage[size - 1];
                     storage[size - 1] = null;
                     size--;
@@ -61,6 +60,7 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
+
     Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
@@ -69,14 +69,13 @@ public class ArrayStorage {
         return size;
     }
 
-    private boolean isCheckInStorage(String uuid) {
-        for (Resume resume : storage) {
-            if (uuid.equals(resume.uuid)) {
-                return true;
+    private Resume isCheckInStorage(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (uuid.equals(storage[i].getUuid())) {
+                return storage[i];
             }
-            break;
         }
-        return false;
+        return null;
     }
 }
 
