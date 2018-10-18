@@ -14,10 +14,11 @@ public class ArrayStorage {
     }
 
     void save(Resume resume) {
+        int index = findValueOfIndex(resume.getUuid());
         if (size >= storage.length) {
             System.out.println("Storage is full");
         } else {
-            if (findValueOfIndex(resume.getUuid()) < 0) {
+            if (index < 0) {
                 storage[size] = resume;
                 size++;
             } else {
