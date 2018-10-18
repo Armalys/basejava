@@ -14,10 +14,10 @@ public class ArrayStorage {
     }
 
     void save(Resume resume) {
-        if (size > storage.length) {
+        if (size >= storage.length) {
             System.out.println("Storage is full");
         } else {
-            if (!Arrays.asList(storage).contains(resume)) {
+            if (findValueOfIndex(resume.getUuid()) < 0) {
                 storage[size] = resume;
                 size++;
             } else {
@@ -27,16 +27,18 @@ public class ArrayStorage {
     }
 
     void update(Resume resume) {
-        if (findValueOfIndex(resume.getUuid()) >= 0) {
-            storage[findValueOfIndex(resume.getUuid())] = resume;
+        int index = findValueOfIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
         } else {
             System.out.println("Resume not in storage");
         }
     }
 
     Resume get(String uuid) {
-        if (findValueOfIndex(uuid) >= 0) {
-            return storage[findValueOfIndex(uuid)];
+        int index = findValueOfIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
         } else {
             System.out.println("Resume not in storage");
             return null;
@@ -44,8 +46,9 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        if (findValueOfIndex(uuid) >= 0) {
-            storage[findValueOfIndex(uuid)] = storage[size - 1];
+        int index = findValueOfIndex(uuid);
+        if (index >= 0) {
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
