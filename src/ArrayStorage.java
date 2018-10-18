@@ -14,7 +14,7 @@ public class ArrayStorage {
     }
 
     void save(Resume resume) {
-        if (size > 10_000) {
+        if (size > storage.length) {
             System.out.println("Storage is full");
         } else {
             if (!Arrays.asList(storage).contains(resume)) {
