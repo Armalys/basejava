@@ -26,17 +26,17 @@ public class ArrayStorage {
         }
     }
 
-    void update(Resume r) {
-        if (Arrays.asList(storage).contains(r)) {
-            storage[Arrays.asList(storage).indexOf(r)] = r;
+    void update(Resume resume) {
+        if (findValueOfIndex(resume.getUuid()) >= 0) {
+            storage[findValueOfIndex(resume.getUuid())] = resume;
         } else {
             System.out.println("Resume not in storage");
         }
     }
 
     Resume get(String uuid) {
-        if (isCheckInStorage(uuid) != null) {
-            return isCheckInStorage(uuid);
+        if (findValueOfIndex(uuid) >= 0) {
+            return storage[findValueOfIndex(uuid)];
         } else {
             System.out.println("Resume not in storage");
             return null;
@@ -44,14 +44,10 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        if (isCheckInStorage(uuid) != null) {
-            for (int i = 0; i < size; i++) {
-                if (uuid.equals(storage[i].getUuid())) {
-                    storage[i] = storage[size - 1];
-                    storage[size - 1] = null;
-                    size--;
-                }
-            }
+        if (findValueOfIndex(uuid) >= 0) {
+            storage[findValueOfIndex(uuid)] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         } else {
             System.out.println("Resume not in storage");
         }
@@ -69,13 +65,13 @@ public class ArrayStorage {
         return size;
     }
 
-    private Resume isCheckInStorage(String uuid) {
+    private int findValueOfIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
-                return storage[i];
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 }
 
