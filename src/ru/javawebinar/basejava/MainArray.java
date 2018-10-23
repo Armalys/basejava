@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Interactive test for ru.javawebinar.basejava.storage.ArrayStorage implementation
+ * Interactive keep for ru.javawebinar.basejava.storage.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {
