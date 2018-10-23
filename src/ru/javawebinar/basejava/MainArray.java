@@ -1,13 +1,18 @@
+package ru.javawebinar.basejava;
+
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.SortedArrayStorage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Interactive test for ArrayStorage implementation
+ * Interactive test for ru.javawebinar.basejava.storage.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private final static SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -27,8 +32,8 @@ public class MainArray {
                 case "list":
                     printAll();
                     break;
-                case "size":
-                    System.out.println(ARRAY_STORAGE.size());
+                case "getSize":
+                    System.out.println(ARRAY_STORAGE.getSize());
                     break;
                 case "save":
                     r = new Resume();
