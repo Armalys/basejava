@@ -22,6 +22,7 @@ public abstract class AbstractArrayStorage implements Storage {
         } else {
             if (index < 0) {
                 keep(resume, index);
+                size++;
             } else {
                 System.out.println("Resume already in storage");
             }
@@ -54,6 +55,8 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findValueOfIndex(uuid);
         if (index >= 0) {
             remove(index);
+            storage[size - 1] = null;
+            size--;
         } else {
             System.out.println("Resume not in storage");
         }
@@ -69,9 +72,9 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
-    public abstract int findValueOfIndex(String uuid);
+    protected abstract int findValueOfIndex(String uuid);
 
-    public abstract void keep(Resume resume, int index);
+    protected abstract void keep(Resume resume, int valueOfIndex);
 
-    public abstract void remove(int index);
+    protected abstract void remove(int valueOfIndex);
 }
