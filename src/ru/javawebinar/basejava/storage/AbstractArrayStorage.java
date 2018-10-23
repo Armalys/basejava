@@ -4,10 +4,11 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-public class AbstractArrayStorage implements Storage{
+public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[10_000];
-    int size = 0;
+    protected int size = 0;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -15,6 +16,15 @@ public class AbstractArrayStorage implements Storage{
 
     @Override
     public void save(Resume resume) {
+        int index = findValueOfIndex(resume.getUuid());
+        if (size >= storage.length) {
+            System.out.println("Storage is full");
+        } else {
+            if (index < 0) {
+            } else {
+                System.out.println("Resume already in storage");
+            }
+        }
     }
 
     @Override
@@ -40,6 +50,11 @@ public class AbstractArrayStorage implements Storage{
 
     @Override
     public void delete(String uuid) {
+        int index = findValueOfIndex(uuid);
+        if (index >= 0) {
+        } else {
+            System.out.println("Resume not in storage");
+        }
     }
 
     @Override
@@ -52,7 +67,6 @@ public class AbstractArrayStorage implements Storage{
         return size;
     }
 
-    private int findValueOfIndex(String uuid) {
-        return 0;
-    }
+    @Override
+    public abstract int findValueOfIndex(String uuid);
 }
