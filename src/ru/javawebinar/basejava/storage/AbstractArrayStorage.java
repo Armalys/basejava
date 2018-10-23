@@ -74,7 +74,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int findValueOfIndex(String uuid);
 
-    protected abstract void keep(Resume resume, int valueOfIndex);
+    protected abstract void keep(Resume resume, int index);
 
     protected abstract void remove(int valueOfIndex);
 }
