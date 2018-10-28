@@ -12,12 +12,10 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
     private static final String DUMMY = "dummy";
     private static final Resume RESUME_1 = new Resume(UUID_1);
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final Resume RESUME_3 = new Resume(UUID_3);
-    private static final Resume RESUME_4 = new Resume(UUID_4);
     private static final Resume RESUME_DUMMY = new Resume(DUMMY);
     private Storage storage;
 
@@ -41,9 +39,9 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void save() {
-        storage.save(RESUME_4);
+        storage.save(RESUME_DUMMY);
         Assert.assertEquals(4, storage.getSize());
-        Assert.assertEquals(RESUME_4, storage.get(RESUME_4.getUuid()));
+        Assert.assertEquals(RESUME_DUMMY, storage.get(RESUME_DUMMY.getUuid()));
     }
 
     @Test(expected = ExistStorageException.class)
@@ -60,7 +58,7 @@ public abstract class AbstractArrayStorageTest {
         } catch (StorageException e) {
             Assert.fail("Storage is not full");
         }
-        storage.save(RESUME_4);
+        storage.save(RESUME_DUMMY);
     }
 
     @Test
