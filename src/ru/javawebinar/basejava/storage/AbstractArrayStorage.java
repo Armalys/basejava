@@ -7,7 +7,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[10_000];
     protected int size = 0;
 
@@ -33,30 +33,10 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void update(Resume resume) {
-        int index = findValueOfIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = findValueOfIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    @Override
     public void delete(String uuid) {
         int index = findValueOfIndex(uuid);
         if (index >= 0) {
-            remove(index);
+            remove(index, uuid);
             storage[size - 1] = null;
             size--;
         } else {
@@ -74,9 +54,17 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
+    @Override
+    protected void abstractUpdate(int index, Resume resume) {
+        storage[index] = resume;
+    }
+
+    @Override
+    protected Resume abstractGet(int index, String uuid) {
+        return storage[index];
+    }
+
     protected abstract int findValueOfIndex(String uuid);
-
     protected abstract void keep(Resume resume, int index);
-
-    protected abstract void remove(int valueOfIndex);
+    protected abstract void remove(int valueOfIndex, String uuid);
 }
