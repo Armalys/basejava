@@ -52,7 +52,7 @@ public abstract class AbstractStorageTest {
     @Test(expected = StorageException.class)
     public void storageOverflow() {
         try {
-            for (int i = 0; i < 9_997; i++) {
+            for (int i = 3; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {

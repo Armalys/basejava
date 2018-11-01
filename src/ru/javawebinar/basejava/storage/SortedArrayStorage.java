@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -13,13 +14,22 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     protected void abstractSave(Object index, Resume resume) {
-        int valueOfIndex = -(int) index - 1;
-        System.arraycopy(storage, valueOfIndex, storage, valueOfIndex + 1, size - valueOfIndex);
-        storage[valueOfIndex] = resume;
+        if (size >= storage.length) {
+            throw new StorageException("Storage is full", resume.getUuid());
+        } else {
+            int value = (int) index;
+            int valueOfIndex = -value - 1;
+            System.arraycopy(storage, valueOfIndex, storage, valueOfIndex + 1, size - valueOfIndex);
+            storage[valueOfIndex] = resume;
+            size++;
+        }
     }
 
     @Override
     protected void abstractDelete(Object valueOfIndex) {
-        System.arraycopy(storage, (int) valueOfIndex + 1, storage, (int) valueOfIndex, size - (int) valueOfIndex - 1);
+        int value = (int) valueOfIndex;
+        System.arraycopy(storage, value + 1, storage, value, size - value - 1);
+        storage[size - 1] = null;
+        size--;
     }
 }
