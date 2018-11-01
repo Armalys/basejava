@@ -20,6 +20,6 @@ public class ArrayStorageTest extends AbstractArrayStorageTest {
         } catch (StorageException e) {
             Assert.fail("Storage is not full");
         }
-        storage.save(RESUME_DUMMY);
+        storage.save(new Resume());
     }
 }
