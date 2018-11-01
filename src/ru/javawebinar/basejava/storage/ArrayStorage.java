@@ -20,7 +20,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void abstractSave(Object index, Resume resume) {
+    protected void abstractSave(Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {

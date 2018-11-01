@@ -40,7 +40,7 @@ public class MapStorage extends AbstractStorage {
         else return false;
     }
 
-    protected void abstractSave(Object index, Resume resume) {
+    protected void abstractSave(Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 

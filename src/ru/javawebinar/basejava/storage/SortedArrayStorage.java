@@ -13,11 +13,11 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
-    protected void abstractSave(Object index, Resume resume) {
+    protected void abstractSave(Resume resume) {
         if (size >= storage.length) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
-            int value = (int) index;
+            int value = (int) getIndex(resume.getUuid());
             int valueOfIndex = -value - 1;
             System.arraycopy(storage, valueOfIndex, storage, valueOfIndex + 1, size - valueOfIndex);
             storage[valueOfIndex] = resume;
