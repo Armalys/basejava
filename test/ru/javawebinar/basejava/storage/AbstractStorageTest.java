@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractStorageTest {
@@ -16,8 +15,8 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_1 = new Resume(UUID_1);
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final Resume RESUME_3 = new Resume(UUID_3);
-    private static final Resume RESUME_DUMMY = new Resume(DUMMY);
-    private Storage storage;
+    protected static final Resume RESUME_DUMMY = new Resume(DUMMY);
+    protected Storage storage;
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -49,17 +48,17 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
     }
 
-    @Test(expected = StorageException.class)
-    public void storageOverflow() {
-        try {
-            for (int i = 3; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail("Storage is not full");
-        }
-        storage.save(RESUME_DUMMY);
-    }
+//    @Test(expected = StorageException.class)
+//    public void storageOverflow() {
+//        try {
+//            for (int i = 3; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+//                storage.save(new Resume());
+//            }
+//        } catch (StorageException e) {
+//            Assert.fail("Storage is not full");
+//        }
+//        storage.save(RESUME_DUMMY);
+//    }
 
     @Test
     public void update() {
