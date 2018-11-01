@@ -40,12 +40,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     protected void abstractSave(Object index, Resume resume) {
-        storage.put(resume.getUuid(), resume);
+        storage.put(index, resume);
     }
 
     @Override
     protected void abstractUpdate(Object index, Resume resume) {
-        storage.replace(resume.getUuid(), resume);
+        storage.replace(index, resume);
     }
 
     @Override
