@@ -24,23 +24,18 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getIndex(String uuid) {
-        Resume resume = storage.get(uuid);
-        if (resume != null) {
-            return uuid;
-        } else {
-            return null;
-        }
+    protected String getIndex(String uuid) {
+        return uuid;
     }
 
     @Override
-    protected Boolean checkIndex(Object index) {
+    protected boolean checkIndex(Object index) {
         String value = (String) index;
-        if (value != null) return true;
-        else return false;
+        Resume resume = storage.get(value);
+        return resume != null;
     }
 
-    protected void abstractSave(Resume resume) {
+    protected void abstractSave(Object index, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
@@ -56,8 +51,8 @@ public class MapStorage extends AbstractStorage {
         return storage.get(value);
     }
 
-    protected void abstractDelete(Object valueOfIndex) {
-        String value = (String) valueOfIndex;
+    protected void abstractDelete(Object index) {
+        String value = (String) index;
         storage.remove(value);
     }
 }

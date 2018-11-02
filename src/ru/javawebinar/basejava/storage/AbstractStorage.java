@@ -10,7 +10,7 @@ public abstract class AbstractStorage implements Storage {
     public void save(Resume resume) {
         Object index = getIndex(resume.getUuid());
         if (!checkIndex(index)) {
-            abstractSave(resume);
+            abstractSave(index, resume);
         } else {
             throw new ExistStorageException(resume.getUuid());
         }
@@ -48,13 +48,13 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getIndex(String uuid);
 
-    protected abstract Boolean checkIndex(Object index);
+    protected abstract boolean checkIndex(Object index);
 
-    protected abstract void abstractSave(Resume resume);
+    protected abstract void abstractSave(Object index, Resume resume);
 
     protected abstract void abstractUpdate(Object index, Resume resume);
 
     protected abstract Resume abstractGet(Object index);
 
-    protected abstract void abstractDelete(Object valueOfIndex);
+    protected abstract void abstractDelete(Object index);
 }
