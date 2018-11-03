@@ -22,7 +22,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
-            keep(index, resume);
+            insert(index, resume);
             size++;
         }
     }
@@ -61,7 +61,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[(int) index] = resume;
     }
 
-    protected abstract void keep(Object index, Resume resume);
+    protected abstract void insert(Object index, Resume resume);
 
     protected abstract void remove(int value);
 }

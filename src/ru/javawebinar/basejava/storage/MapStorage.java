@@ -30,9 +30,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean checkIndex(Object index) {
-        String value = (String) index;
-        Resume resume = storage.get(value);
-        return resume != null;
+        return storage.containsKey(index);
     }
 
     protected void abstractSave(Object index, Resume resume) {
