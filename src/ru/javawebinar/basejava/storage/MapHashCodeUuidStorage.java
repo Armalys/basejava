@@ -2,11 +2,13 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
-    private Map<String, Resume> storage = new HashMap<>();
+public class MapHashCodeUuidStorage extends AbstractStorage {
+    private Map<Integer, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
@@ -14,8 +16,10 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
+    public List<Resume> getAllSorted() {
+        List<Resume> resumes = new ArrayList<>(storage.values());
+        resumes.sort(RESUME_COMPARATOR);
+        return resumes;
     }
 
     @Override
@@ -24,33 +28,34 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected String getIndex(String uuid) {
-        return uuid;
+    protected Integer getIndex(String uuid) {
+        return uuid.hashCode();
     }
 
     @Override
     protected boolean checkIndex(Object index) {
-        return storage.containsKey(index);
+        Integer value = (Integer) index;
+        return storage.containsKey(value);
     }
 
     protected void abstractSave(Object index, Resume resume) {
-        storage.put(resume.getUuid(), resume);
+        storage.put((Integer) index, resume);
     }
 
     @Override
     protected void abstractUpdate(Object index, Resume resume) {
-        String value = (String) index;
+        Integer value = (Integer) index;
         storage.replace(value, resume);
     }
 
     @Override
     protected Resume abstractGet(Object index) {
-        String value = (String) index;
+        Integer value = (Integer) index;
         return storage.get(value);
     }
 
     protected void abstractDelete(Object index) {
-        String value = (String) index;
+        Integer value = (Integer) index;
         storage.remove(value);
     }
 }

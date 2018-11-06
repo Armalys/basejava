@@ -3,21 +3,23 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ListStorage extends AbstractStorage {
-    private List<Resume> storage = new ArrayList<>();
+public class MapUuidStorage extends AbstractStorage {
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
         storage.clear();
     }
 
-
     @Override
     public List<Resume> getAllSorted() {
-        storage.sort(RESUME_COMPARATOR);
-        return storage;
+        List<Resume> resumes = new ArrayList<>(storage.values());
+        resumes.sort(RESUME_COMPARATOR);
+        return resumes;
     }
 
     @Override
@@ -25,40 +27,34 @@ public class ListStorage extends AbstractStorage {
         return storage.size();
     }
 
-
-    protected Integer getIndex(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (uuid.equals(storage.get(i).getUuid())) {
-                return i;
-            }
-        }
-        return -1;
+    @Override
+    protected String getIndex(String uuid) {
+        return uuid;
     }
 
     @Override
     protected boolean checkIndex(Object index) {
-        int value = (int) index;
-        return value >= 0;
+        return storage.containsKey(index);
     }
 
     protected void abstractSave(Object index, Resume resume) {
-        storage.add(resume);
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected void abstractUpdate(Object index, Resume resume) {
-        int value = (int) index;
-        storage.set(value, resume);
+        String value = (String) index;
+        storage.replace(value, resume);
     }
 
     @Override
     protected Resume abstractGet(Object index) {
-        int value = (int) index;
+        String value = (String) index;
         return storage.get(value);
     }
 
     protected void abstractDelete(Object index) {
-        int value = (int) index;
+        String value = (String) index;
         storage.remove(value);
     }
 }
