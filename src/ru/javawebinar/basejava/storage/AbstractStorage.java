@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
     protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
@@ -40,6 +41,13 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> resumes = abstractGetAllSorted();
+        resumes.sort(RESUME_COMPARATOR);
+        return resumes;
+    }
+
+    @Override
     public void delete(String uuid) {
         Object index = getIndex(uuid);
         if (checkIndex(index)) {
@@ -58,6 +66,8 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void abstractUpdate(Object index, Resume resume);
 
     protected abstract Resume abstractGet(Object index);
+
+    protected abstract List<Resume> abstractGetAllSorted();
 
     protected abstract void abstractDelete(Object index);
 }

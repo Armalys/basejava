@@ -13,13 +13,6 @@ public class ListStorage extends AbstractStorage {
         storage.clear();
     }
 
-
-    @Override
-    public List<Resume> getAllSorted() {
-        storage.sort(RESUME_COMPARATOR);
-        return storage;
-    }
-
     @Override
     public int getSize() {
         return storage.size();
@@ -55,6 +48,11 @@ public class ListStorage extends AbstractStorage {
     protected Resume abstractGet(Object index) {
         int value = (int) index;
         return storage.get(value);
+    }
+
+    @Override
+    public List<Resume> abstractGetAllSorted() {
+        return storage;
     }
 
     protected void abstractDelete(Object index) {
