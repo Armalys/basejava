@@ -27,9 +27,8 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected boolean checkIndex(Object index) {
-        if (index == null) return false;
-        Resume value = (Resume) index;
-        return storage.containsKey(value.getUuid());
+        return index != null;
+
     }
 
     protected void abstractSave(Object index, Resume resume) {

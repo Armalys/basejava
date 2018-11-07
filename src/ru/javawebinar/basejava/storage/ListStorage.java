@@ -52,7 +52,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public List<Resume> abstractGetAllSorted() {
-        return storage;
+        return new ArrayList<>(storage);
     }
 
     protected void abstractDelete(Object index) {
