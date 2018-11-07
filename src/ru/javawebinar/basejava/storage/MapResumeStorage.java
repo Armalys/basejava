@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -21,30 +21,28 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getIndex(String uuid) {
+    protected Resume getSearchKey(String uuid) {
         return storage.get(uuid);
     }
 
     @Override
-    protected boolean checkIndex(Object index) {
-        return index != null;
+    protected boolean checkSearchKey(Resume searchKey) {
+        return searchKey != null;
 
     }
 
-    protected void abstractSave(Object index, Resume resume) {
+    protected void abstractSave(Resume searchKey, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void abstractUpdate(Object index, Resume resume) {
-        Resume value = (Resume) index;
-        storage.replace(value.getUuid(), resume);
+    protected void abstractUpdate(Resume searchKey, Resume resume) {
+        storage.replace(searchKey.getUuid(), resume);
     }
 
     @Override
-    protected Resume abstractGet(Object index) {
-        Resume value = (Resume) index;
-        return storage.get(value.getUuid());
+    protected Resume abstractGet(Resume searchKey) {
+        return storage.get(searchKey.getUuid());
     }
 
     @Override
@@ -52,8 +50,7 @@ public class MapResumeStorage extends AbstractStorage {
         return new ArrayList<>(storage.values());
     }
 
-    protected void abstractDelete(Object index) {
-        Resume value = (Resume) index;
-        storage.remove(value.getUuid());
+    protected void abstractDelete(Resume searchKey) {
+        storage.remove(searchKey.getUuid());
     }
 }

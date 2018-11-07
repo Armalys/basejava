@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -18,19 +18,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void abstractSave(Object index, Resume resume) {
+    protected void abstractSave(Integer searchKey, Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
-            insert(index, resume);
+            insert(searchKey, resume);
             size++;
         }
     }
 
     @Override
-    protected void abstractDelete(Object index) {
-        int value = (int) index;
-        remove(value);
+    protected void abstractDelete(Integer searchKey) {
+        remove(searchKey);
         storage[size - 1] = null;
         size--;
     }
@@ -46,22 +45,21 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkIndex(Object index) {
-        int value = (int) index;
-        return value >= 0;
+    protected boolean checkSearchKey(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     @Override
-    protected Resume abstractGet(Object index) {
-        return storage[(int) index];
+    protected Resume abstractGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
-    protected void abstractUpdate(Object index, Resume resume) {
-        storage[(int) index] = resume;
+    protected void abstractUpdate(Integer searchKey, Resume resume) {
+        storage[searchKey] = resume;
     }
 
-    protected abstract void insert(Object index, Resume resume);
+    protected abstract void insert(Integer searchKey, Resume resume);
 
     protected abstract void remove(int value);
 }

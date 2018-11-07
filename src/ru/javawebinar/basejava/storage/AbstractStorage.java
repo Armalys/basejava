@@ -7,14 +7,14 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
     protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     @Override
     public void save(Resume resume) {
-        Object index = getIndex(resume.getUuid());
-        if (!checkIndex(index)) {
-            abstractSave(index, resume);
+        SK searchKey = getSearchKey(resume.getUuid());
+        if (!checkSearchKey(searchKey)) {
+            abstractSave(searchKey, resume);
         } else {
             throw new ExistStorageException(resume.getUuid());
         }
@@ -22,9 +22,9 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        Object index = getIndex(resume.getUuid());
-        if (checkIndex(index)) {
-            abstractUpdate(index, resume);
+        SK searchKey = getSearchKey(resume.getUuid());
+        if (checkSearchKey(searchKey)) {
+            abstractUpdate(searchKey, resume);
         } else {
             throw new NotExistStorageException(resume.getUuid());
         }
@@ -32,9 +32,9 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        Object index = getIndex(uuid);
-        if (checkIndex(index)) {
-            return abstractGet(index);
+        SK searchKey = getSearchKey(uuid);
+        if (checkSearchKey(searchKey)) {
+            return abstractGet(searchKey);
         } else {
             throw new NotExistStorageException(uuid);
         }
@@ -49,25 +49,25 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        Object index = getIndex(uuid);
-        if (checkIndex(index)) {
-            abstractDelete(index);
+        SK searchKey = getSearchKey(uuid);
+        if (checkSearchKey(searchKey)) {
+            abstractDelete(searchKey);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    protected abstract Object getIndex(String uuid);
+    protected abstract SK getSearchKey(String uuid);
 
-    protected abstract boolean checkIndex(Object index);
+    protected abstract boolean checkSearchKey(SK searchKey);
 
-    protected abstract void abstractSave(Object index, Resume resume);
+    protected abstract void abstractSave(SK searchKey, Resume resume);
 
-    protected abstract void abstractUpdate(Object index, Resume resume);
+    protected abstract void abstractUpdate(SK searchKey, Resume resume);
 
-    protected abstract Resume abstractGet(Object index);
+    protected abstract Resume abstractGet(SK searchKey);
 
     protected abstract List<Resume> abstractGetAllSorted();
 
-    protected abstract void abstractDelete(Object index);
+    protected abstract void abstractDelete(SK searchKey);
 }

@@ -9,14 +9,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
-    protected Integer getIndex(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid, "new name");
         return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 
     @Override
-    protected void insert(Object index, Resume resume) {
-        int value = -(int) index - 1;
+    protected void insert(Integer searchKey, Resume resume) {
+        int value = -searchKey - 1;
         System.arraycopy(storage, value, storage, value + 1, size - value);
         storage[value] = resume;
     }
