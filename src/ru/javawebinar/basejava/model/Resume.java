@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.EnumMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,6 +10,9 @@ import java.util.UUID;
 public class Resume {
     private final String uuid;
     private final String fullName;
+    private EnumMap<ContactType, String> contacts;
+    private EnumMap<SectionType, AbstractType> sections;
+
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -27,6 +31,22 @@ public class Resume {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public EnumMap<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(EnumMap<ContactType, String> contacts) {
+        this.contacts = contacts;
+    }
+
+    public EnumMap<SectionType, AbstractType> getSections() {
+        return sections;
+    }
+
+    public void setSections(EnumMap<SectionType, AbstractType> sections) {
+        this.sections = sections;
     }
 
     @Override
