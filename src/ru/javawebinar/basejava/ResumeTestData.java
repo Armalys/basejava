@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ResumeTestData {
     public static void main(String[] args) {
-        Resume resume = new Resume("uuid1", "FullName");
+        Resume resume = new Resume("uuid1", "Григорий Кислин");
         EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
         EnumMap<SectionType, AbstractTypeOfSection> sections = new EnumMap<>(SectionType.class);
 
@@ -33,7 +33,7 @@ public class ResumeTestData {
         educations.add(new Organization("Luxoft", "03/2011 - 04/2011", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366", "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""));
         educations.add(new Organization("Siemens AG", "01/2005 - 04/2005", "http://www.siemens.ru/", "3 месяца обучения мобильным IN сетям (Берлин)"));
 
-        AbstractTypeOfSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.\n");
+        AbstractTypeOfSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
         AbstractTypeOfSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         AbstractTypeOfSection achievements = new ListOfTextSection(achievement);
         AbstractTypeOfSection qualifications = new ListOfTextSection(qualification);
@@ -59,12 +59,15 @@ public class ResumeTestData {
 
         resume.setSections(sections);
 
-        for (String text : resume.getContacts().values()) {
-            System.out.println(text);
+
+        System.out.println("Имя Фамлия: " + resume.getFullName());
+
+        for (ContactType contac : resume.getContacts().keySet()) {
+            System.out.println(contac.getTitle() + ": " + resume.getContacts().get(contac));
         }
 
-        for (AbstractTypeOfSection text : resume.getSections().values()) {
-            System.out.println(text);
+        for (SectionType section : resume.getSections().keySet()) {
+            System.out.println(section.getTitle() + ": " + resume.getSections().get(section));
         }
     }
 }

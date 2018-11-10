@@ -1,10 +1,8 @@
 package ru.javawebinar.basejava.model;
 
 public class TextSection extends AbstractTypeOfSection<String> {
-    private String information;
-
     public TextSection(String information) {
-        this.information = information;
+        super(information);
     }
 
     @Override
