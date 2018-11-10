@@ -11,7 +11,7 @@ public class Resume {
     private final String uuid;
     private final String fullName;
     private EnumMap<ContactType, String> contacts;
-    private EnumMap<SectionType, AbstractType> sections;
+    private EnumMap<SectionType, AbstractTypeOfSection> sections;
 
 
     public Resume(String fullName) {
@@ -41,11 +41,11 @@ public class Resume {
         this.contacts = contacts;
     }
 
-    public EnumMap<SectionType, AbstractType> getSections() {
+    public EnumMap<SectionType, AbstractTypeOfSection> getSections() {
         return sections;
     }
 
-    public void setSections(EnumMap<SectionType, AbstractType> sections) {
+    public void setSections(EnumMap<SectionType, AbstractTypeOfSection> sections) {
         this.sections = sections;
     }
 
