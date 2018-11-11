@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 /**
- * Interactive abstractSave for ru.javawebinar.basejava.storage.ArrayStorage implementation
+ * Interactive doSave for ru.javawebinar.basejava.storage.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {
@@ -34,8 +34,8 @@ public class MainArray {
                 case "list":
                     printAll();
                     break;
-                case "getSize":
-                    System.out.println(ARRAY_STORAGE.getSize());
+                case "size":
+                    System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
                     r = new Resume(param);

@@ -17,5 +17,5 @@ public interface Storage {
 
     List<Resume> getAllSorted();
 
-    int getSize();
+    int size();
 }

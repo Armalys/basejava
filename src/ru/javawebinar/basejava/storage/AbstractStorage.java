@@ -16,27 +16,27 @@ public abstract class AbstractStorage<SK> implements Storage {
     public void save(Resume resume) {
         LOG.info("Save " + resume);
         SK searchKey = getExistSearchKey(resume.getUuid());
-        abstractSave(searchKey, resume);
+        doSave(searchKey, resume);
     }
 
     @Override
     public void update(Resume resume) {
         LOG.info("Update " + resume);
         SK searchKey = getNotExistSearchKey(resume.getUuid());
-        abstractUpdate(searchKey, resume);
+        doUpdate(searchKey, resume);
     }
 
     @Override
     public Resume get(String uuid) {
         LOG.info("Get " + uuid);
         SK searchKey = getNotExistSearchKey(uuid);
-        return abstractGet(searchKey);
+        return doGet(searchKey);
     }
 
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("GetAllSorted");
-        List<Resume> resumes = abstractGetAllSorted();
+        List<Resume> resumes = doGetAllSorted();
         resumes.sort(RESUME_COMPARATOR);
         return resumes;
     }
@@ -45,12 +45,12 @@ public abstract class AbstractStorage<SK> implements Storage {
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
         SK searchKey = getNotExistSearchKey(uuid);
-        abstractDelete(searchKey);
+        doDelete(searchKey);
     }
 
     private SK getExistSearchKey(String uuid) {
         SK searchKey = getSearchKey(uuid);
-        if (checkSearchKey(searchKey)) {
+        if (isExist(searchKey)) {
             LOG.warning("Resume " + uuid + " not exist");
             throw new ExistStorageException(uuid);
         }
@@ -59,7 +59,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private SK getNotExistSearchKey(String uuid) {
         SK searchKey = getSearchKey(uuid);
-        if (!checkSearchKey(searchKey)) {
+        if (!isExist(searchKey)) {
             LOG.warning("Resume " + uuid + " already exist");
             throw new NotExistStorageException(uuid);
         }
@@ -68,15 +68,15 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract SK getSearchKey(String uuid);
 
-    protected abstract boolean checkSearchKey(SK searchKey);
+    protected abstract boolean isExist(SK searchKey);
 
-    protected abstract void abstractSave(SK searchKey, Resume resume);
+    protected abstract void doSave(SK searchKey, Resume resume);
 
-    protected abstract void abstractUpdate(SK searchKey, Resume resume);
+    protected abstract void doUpdate(SK searchKey, Resume resume);
 
-    protected abstract Resume abstractGet(SK searchKey);
+    protected abstract Resume doGet(SK searchKey);
 
-    protected abstract List<Resume> abstractGetAllSorted();
+    protected abstract List<Resume> doGetAllSorted();
 
-    protected abstract void abstractDelete(SK searchKey);
+    protected abstract void doDelete(SK searchKey);
 }

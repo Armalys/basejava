@@ -16,7 +16,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    public int getSize() {
+    public int size() {
         return storage.size();
     }
 
@@ -26,31 +26,31 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected boolean checkSearchKey(Resume searchKey) {
+    protected boolean isExist(Resume searchKey) {
         return searchKey != null;
 
     }
 
-    protected void abstractSave(Resume searchKey, Resume resume) {
+    protected void doSave(Resume searchKey, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void abstractUpdate(Resume searchKey, Resume resume) {
+    protected void doUpdate(Resume searchKey, Resume resume) {
         storage.replace(searchKey.getUuid(), resume);
     }
 
     @Override
-    protected Resume abstractGet(Resume searchKey) {
+    protected Resume doGet(Resume searchKey) {
         return storage.get(searchKey.getUuid());
     }
 
     @Override
-    public List<Resume> abstractGetAllSorted() {
+    public List<Resume> doGetAllSorted() {
         return new ArrayList<>(storage.values());
     }
 
-    protected void abstractDelete(Resume searchKey) {
+    protected void doDelete(Resume searchKey) {
         storage.remove(searchKey.getUuid());
     }
 }

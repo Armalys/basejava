@@ -14,7 +14,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public int getSize() {
+    public int size() {
         return storage.size();
     }
 
@@ -29,30 +29,30 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean checkSearchKey(Integer searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return searchKey >= 0;
     }
 
-    protected void abstractSave(Integer searchKey, Resume resume) {
+    protected void doSave(Integer searchKey, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected void abstractUpdate(Integer searchKey, Resume resume) {
+    protected void doUpdate(Integer searchKey, Resume resume) {
         storage.set(searchKey, resume);
     }
 
     @Override
-    protected Resume abstractGet(Integer searchKey) {
+    protected Resume doGet(Integer searchKey) {
         return storage.get(searchKey);
     }
 
     @Override
-    public List<Resume> abstractGetAllSorted() {
+    public List<Resume> doGetAllSorted() {
         return new ArrayList<>(storage);
     }
 
-    protected void abstractDelete(Integer searchKey) {
+    protected void doDelete(Integer searchKey) {
         storage.remove(searchKey.intValue());
     }
 }
