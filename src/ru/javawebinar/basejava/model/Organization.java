@@ -4,50 +4,50 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Organization {
-    private String name;
-    private LocalDate dateStart;
-    private LocalDate dateEnd;
-    private String link;
-    private String position;
-    private String content;
+    private final Link homePage;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String title;
+    private final String description;
 
-    public Organization(String name, LocalDate dateStart, LocalDate dateEnd, String link, String position, String content) {
-        this.name = name;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.link = link;
-        this.position = position;
-        this.content = content;
-    }
-
-    public Organization(String name, LocalDate dateStart, LocalDate dateEnd, String link, String content) {
-        this.name = name;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.link = link;
-        this.content = content;
+    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
+        Objects.requireNonNull(startDate, " startDate must not be bull");
+        Objects.requireNonNull(endDate, " endDate must not be bull");
+        Objects.requireNonNull(title, " title must not be bull");
+        this.homePage = new Link(name, url);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.title = title;
+        this.description = description;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Organization that = (Organization) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(dateStart, that.dateStart) &&
-                Objects.equals(dateEnd, that.dateEnd) &&
-                Objects.equals(link, that.link) &&
-                Objects.equals(position, that.position) &&
-                Objects.equals(content, that.content);
+
+        if (homePage != null ? !homePage.equals(that.homePage) : that.homePage != null) return false;
+        if (!startDate.equals(that.startDate)) return false;
+        if (!endDate.equals(that.endDate)) return false;
+        if (!title.equals(that.title)) return false;
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, dateStart, dateEnd, link, position, content);
+        int result = homePage != null ? homePage.hashCode() : 0;
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        return name + " " + dateStart + " " + dateEnd + " " + link + " " + position + " " + content;
+        return homePage + " " + startDate + " " + endDate + " " + " " + title + " " + description;
+
     }
 }

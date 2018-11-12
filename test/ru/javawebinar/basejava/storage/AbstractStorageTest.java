@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
     private static final String UUID_1 = "uuid1";
@@ -111,8 +111,8 @@ public abstract class AbstractStorageTest {
         storage.delete(DUMMY);
     }
 
-    private void assertGet(Resume r) {
-        assertEquals(r, storage.get(r.getUuid()));
+    private void assertGet(Resume resume) {
+        assertEquals(resume, storage.get(resume.getUuid()));
     }
 
     private void assertSize(int size) {

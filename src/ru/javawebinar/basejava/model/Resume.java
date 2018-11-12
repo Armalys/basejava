@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -7,11 +8,11 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
     private final String uuid;
     private final String fullName;
-    private Map<ContactType, String> contacts;
-    private Map<SectionType, AbstractTypeOfSection> sections;
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
 
     public Resume(String fullName) {
@@ -41,14 +42,17 @@ public class Resume {
         this.contacts = contacts;
     }
 
-    public Map<SectionType, AbstractTypeOfSection> getSections() {
+    public Map<SectionType, Section> getSections() {
         return sections;
     }
 
-    public void setSections(Map<SectionType, AbstractTypeOfSection> sections) {
+    public void setSections(Map<SectionType, Section> sections) {
         this.sections = sections;
     }
 
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -72,5 +76,11 @@ public class Resume {
                 "uuid='" + uuid + '\'' +
                 ", fullName='" + fullName + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Resume resume) {
+        int cmp = fullName.compareTo(resume.getFullName());
+        return cmp != 0 ? cmp : uuid.compareTo(resume.getUuid());
     }
 }
