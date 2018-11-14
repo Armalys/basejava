@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = new Resume("uuid1", "Григорий Кислин");
-
+    public static void fillData(Resume resume) {
         List<String> achievement = new ArrayList<>();
         achievement.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
         achievement.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
@@ -67,12 +65,12 @@ public class ResumeTestData {
                 "3 месяца обучения мобильным IN сетям (Берлин)",
                 null));
 
-        Section personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
-        Section objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
-        Section achievements = new ListSection(achievement);
-        Section qualifications = new ListSection(qualification);
-        Section experience = new OrganizationSection(experiences);
-        Section education = new OrganizationSection(educations);
+        AbstractSection personal = new TextAbstractSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
+        AbstractSection objective = new TextAbstractSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
+        AbstractSection achievements = new ListAbstractSection(achievement);
+        AbstractSection qualifications = new ListAbstractSection(qualification);
+        AbstractSection experience = new OrganizationAbstractSection(experiences);
+        AbstractSection education = new OrganizationAbstractSection(educations);
 
         Map<ContactType, String> contacts = resume.getContacts();
         contacts.put(ContactType.PHONE, "+7(921) 855-0482");
@@ -85,7 +83,7 @@ public class ResumeTestData {
 
         resume.setContacts(contacts);
 
-        Map<SectionType, Section> sections = resume.getSections();
+        Map<SectionType, AbstractSection> sections = resume.getSections();
         sections.put(SectionType.PERSONAL, personal);
         sections.put(SectionType.OBJECTIVE, objective);
         sections.put(SectionType.ACHIEVEMENT, achievements);
@@ -94,15 +92,5 @@ public class ResumeTestData {
         sections.put(SectionType.EDUCATION, education);
 
         resume.setSections(sections);
-
-        System.out.println("Имя Фамлия: " + resume.getFullName());
-
-        for (ContactType contact : resume.getContacts().keySet()) {
-            System.out.println(contact.getTitle() + ": " + resume.getContacts().get(contact));
-        }
-
-        for (SectionType section : resume.getSections().keySet()) {
-            System.out.println(section.getTitle() + ": " + resume.getSections().get(section));
-        }
     }
 }
