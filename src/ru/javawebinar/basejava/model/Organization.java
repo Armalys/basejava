@@ -1,24 +1,25 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.LocalDate;
-import java.util.Objects;
+import java.time.YearMonth;
+import java.util.Arrays;
+import java.util.List;
 
 public class Organization {
     private final Link homePage;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
+    private final List<Stage> stage;
 
-    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate, " startDate must not be bull");
-        Objects.requireNonNull(endDate, " endDate must not be bull");
-        Objects.requireNonNull(title, " title must not be bull");
-        this.homePage = new Link(name, url);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+    public Organization(String name, String url, YearMonth startDate, YearMonth endDate, String title, String discriprion) {
+        this(new Link(name, url), new Stage(startDate, endDate, title, discriprion));
+    }
+
+    public Organization(Link homePage, Stage... stages) {
+        this(homePage, Arrays.asList(stages));
+    }
+
+    public Organization(Link homePage, List<Stage> stages) {
+        this.homePage = homePage;
+        this.stage = stages;
+
     }
 
     @Override
@@ -29,25 +30,19 @@ public class Organization {
         Organization that = (Organization) o;
 
         if (homePage != null ? !homePage.equals(that.homePage) : that.homePage != null) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        if (!endDate.equals(that.endDate)) return false;
-        if (!title.equals(that.title)) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
+        return stage != null ? stage.equals(that.stage) : that.stage == null;
     }
 
     @Override
     public int hashCode() {
         int result = homePage != null ? homePage.hashCode() : 0;
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (stage != null ? stage.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return homePage + " " + startDate + " " + endDate + " " + " " + title + " " + description;
+        return homePage + " " + stage;
 
     }
 }

@@ -2,7 +2,7 @@ package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
 
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,14 +23,49 @@ public class ResumeTestData {
         qualification.add("MySQL, SQLite, MS SQL, HSQLDB");
 
         List<Organization> experiences = new ArrayList<>();
-        experiences.add(new Organization("Java Online Projects", "http://javaops.ru/", LocalDate.of(2013, 10, 1), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
-        experiences.add(new Organization("Wrike", "https://www.wrike.com/", LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
-        experiences.add(new Organization("Yota", "https://www.yota.ru/", LocalDate.of(2008, 6, 1), LocalDate.of(2010, 12, 1), "Ведущий специалист", "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"));
+        experiences.add(new Organization(
+                "Java Online Projects", "http://javaops.ru/",
+                YearMonth.of(2013, 10), YearMonth.now(),
+                "Автор проекта.",
+                "Создание, организация и проведение Java онлайн проектов и стажировок."));
+        experiences.add(new Organization(
+                "Java Online Projects", "http://javaops.ru/",
+                YearMonth.of(2014, 10), YearMonth.now(),
+                "Автор курса.",
+                "Создание, организация и проведение Java онлайн проектов и стажировок."));
+        experiences.add(new Organization(
+                "Wrike", "https://www.wrike.com/",
+                YearMonth.of(2014, 10), YearMonth.of(2016, 1),
+                "Старший разработчик (backend)",
+                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
+        experiences.add(new Organization(
+                "Yota", "https://www.yota.ru/",
+                YearMonth.of(2008, 6), YearMonth.of(2010, 12),
+                "Ведущий специалист",
+                "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"));
 
         List<Organization> educations = new ArrayList<>();
-        educations.add(new Organization("Coursera", "https://www.coursera.org/course/progfun", LocalDate.of(2013, 3, 1), LocalDate.of(2013, 5, 1), "Functional Programming Principles in Scala\" by Martin Odersky", null));
-        educations.add(new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366", LocalDate.of(2011, 3, 1), LocalDate.of(2011, 4, 1), "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", null));
-        educations.add(new Organization("Siemens AG", "http://www.siemens.ru/", LocalDate.of(2005, 1, 1), LocalDate.of(2005, 4, 1), "3 месяца обучения мобильным IN сетям (Берлин)", null));
+        Link itmo = new Link("СПБНИУ ИТМО", "https://www.ifmo.ru");
+        Stage itmoStage1 = new Stage(YearMonth.of(2013, 9), YearMonth.of(1996, 7),
+                "Аспирантура(программист С,С++)",
+                null);
+        Stage itmoStage2 = new Stage(YearMonth.of(1987, 9), YearMonth.of(1993, 7),
+                "Инженер (программист Fortran,C)",
+                null);
+        educations.add(new Organization(itmo, itmoStage1, itmoStage2));
+        educations.add(new Organization(
+                "Coursera", "https://www.coursera.org/course/progfun",
+                YearMonth.of(2013, 3), YearMonth.of(2013, 5),
+                "Functional Programming Principles in Scala\" by Martin Odersky",
+                null));
+        educations.add(new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
+                YearMonth.of(2011, 3), YearMonth.of(2011, 4),
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
+                null));
+        educations.add(new Organization("Siemens AG", "http://www.siemens.ru/",
+                YearMonth.of(2005, 1), YearMonth.of(2005, 4),
+                "3 месяца обучения мобильным IN сетям (Берлин)",
+                null));
 
         Section personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
         Section objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
@@ -60,17 +95,14 @@ public class ResumeTestData {
 
         resume.setSections(sections);
 
-//        System.out.println("Имя Фамлия: " + resume.getFullName());
-//
-//        for (ContactType contact : resume.getContacts().keySet()) {
-//            System.out.println(contact.getTitle() + ": " + resume.getContacts().get(contact));
-//        }
-//
-//        for (SectionType section : resume.getSections().keySet()) {
-//            System.out.println(section.getTitle() + ": " + resume.getSections().get(section));
-//        }
+        System.out.println("Имя Фамлия: " + resume.getFullName());
 
-        System.out.println(resume.getSections().keySet());
+        for (ContactType contact : resume.getContacts().keySet()) {
+            System.out.println(contact.getTitle() + ": " + resume.getContacts().get(contact));
+        }
 
+        for (SectionType section : resume.getSections().keySet()) {
+            System.out.println(section.getTitle() + ": " + resume.getSections().get(section));
+        }
     }
 }
