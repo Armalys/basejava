@@ -62,7 +62,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> doGetAllSorted() {
         List<Resume> resumes = new ArrayList<>();
         File[] files = directory.listFiles();
-        Objects.requireNonNull(files, " directory is is empty");
+        isDirectoryEmpty(files);
         for (File file : files) {
             resumes.add(doRead(file));
         }
@@ -77,7 +77,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] files = directory.listFiles();
-        Objects.requireNonNull(files, " directory is is empty");
+        isDirectoryEmpty(files);
         for (File file : files) {
             file.delete();
         }
@@ -85,9 +85,15 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        Objects.requireNonNull(list, " directory is is empty");
-        return list.length;
+        File[] files = directory.listFiles();
+        isDirectoryEmpty(files);
+        return files.length;
+    }
+
+    private void isDirectoryEmpty(File[] files) {
+        if (files == null) {
+            throw new StorageException("Directory is is empty ", directory.getName());
+        }
     }
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;

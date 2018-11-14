@@ -31,7 +31,6 @@ public abstract class AbstractStorageTest {
         RESUME_2 = new Resume(UUID_2, "full name 2");
         RESUME_3 = new Resume(UUID_3, "full name 3");
         RESUME_DUMMY = new Resume(DUMMY, "full name dummy");
-
         fillData(RESUME_1);
         fillData(RESUME_2);
         fillData(RESUME_3);
