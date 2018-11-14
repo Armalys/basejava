@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava;
 
 import java.io.File;
-import java.util.Objects;
 
 public class MainRecursion {
     public static void main(String[] args) {
@@ -11,7 +10,7 @@ public class MainRecursion {
 
     private static void readAllFiles(File directory) {
         File[] files = directory.listFiles();
-        Objects.requireNonNull(files, " directory is empty");
+//        Objects.requireNonNull(files, " directory is empty");
         for (File file : files) {
             if (file.isDirectory()) {
                 readAllFiles(file);
