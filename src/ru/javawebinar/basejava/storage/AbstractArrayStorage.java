@@ -18,11 +18,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void doSave(Integer searchKey, Resume resume) {
+    protected void doSave(Resume resume, Integer searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
-            insert(searchKey, resume);
+            insert(resume, searchKey);
             size++;
         }
     }
@@ -55,11 +55,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void doUpdate(Integer searchKey, Resume resume) {
+    protected void doUpdate(Resume resume, Integer searchKey) {
         storage[searchKey] = resume;
     }
 
-    protected abstract void insert(Integer searchKey, Resume resume);
+    protected abstract void insert(Resume resume, Integer searchKey);
 
     protected abstract void remove(int value);
 }

@@ -33,12 +33,12 @@ public class ListStorage extends AbstractStorage<Integer> {
         return searchKey >= 0;
     }
 
-    protected void doSave(Integer searchKey, Resume resume) {
+    protected void doSave(Resume resume, Integer searchKey) {
         storage.add(resume);
     }
 
     @Override
-    protected void doUpdate(Integer searchKey, Resume resume) {
+    protected void doUpdate(Resume resume, Integer searchKey) {
         storage.set(searchKey, resume);
     }
 

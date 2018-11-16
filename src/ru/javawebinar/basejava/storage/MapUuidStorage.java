@@ -30,12 +30,12 @@ public class MapUuidStorage extends AbstractStorage<String> {
         return storage.containsKey(searchKey);
     }
 
-    protected void doSave(String searchKey, Resume resume) {
+    protected void doSave(Resume resume, String searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void doUpdate(String searchKey, Resume resume) {
+    protected void doUpdate(Resume resume, String searchKey) {
         storage.replace(searchKey, resume);
     }
 

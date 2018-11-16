@@ -31,13 +31,13 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
 
     }
 
-    protected void doSave(Resume searchKey, Resume resume) {
+    protected void doSave(Resume resume, Resume searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected void doUpdate(Resume searchKey, Resume resume) {
-        storage.replace(searchKey.getUuid(), resume);
+        storage.replace(searchKey.getUuid(), searchKey);
     }
 
     @Override
