@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static ru.javawebinar.basejava.ResumeTestData.fillData;
 
 public abstract class AbstractStorageTest {
@@ -25,7 +25,7 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3;
     private static final Resume RESUME_DUMMY;
 
-    protected static final File storageDir = new File("/home/armaly/rep/basejava/src/ru/javawebinar/basejava/test");
+    protected static final File storageDir = new File("/home/armaly/rep/basejava/storage");
 
 
     protected Storage storage;
@@ -79,7 +79,7 @@ public abstract class AbstractStorageTest {
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
         storage.update(newResume);
-        assertSame(newResume, storage.get(UUID_1));
+        assertTrue(newResume.equals(storage.get(UUID_1)));
     }
 
     @Test(expected = NotExistStorageException.class)
