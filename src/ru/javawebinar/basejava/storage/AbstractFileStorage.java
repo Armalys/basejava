@@ -3,7 +3,9 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,14 +58,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return doRead(file);
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File read error", file.getName(), e);
         }
     }
 
     @Override
-    protected List<Resume> doGetAllSorted() {
+    protected List<Resume> doCopyAll() {
         File[] files = directory.listFiles();
         if (files == null) {
             throw new StorageException("Directory reead error", null);
@@ -96,12 +98,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("Dirrectory read is error", null);
+            throw new StorageException("Directory read is error", null);
         }
         return files.length;
     }
 
     protected abstract void doWrite(File file, Resume resume) throws IOException;
 
-    protected abstract Resume doRead(File file) throws IOException;
+    protected abstract Resume doRead(BufferedInputStream file) throws IOException;
 }
