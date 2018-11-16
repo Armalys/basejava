@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +24,9 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
     private static final Resume RESUME_DUMMY;
+
+    protected static final File storageDir = new File("/home/armaly/rep/basejava/src/ru/javawebinar/basejava/test");
+
 
     protected Storage storage;
 
