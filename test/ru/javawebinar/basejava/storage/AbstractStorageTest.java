@@ -25,8 +25,7 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3;
     private static final Resume RESUME_DUMMY;
 
-    protected static final File storageDir = new File("/home/armaly/rep/basejava/storage");
-
+    protected static final File storageDir = new File("./storage");
 
     protected Storage storage;
 
@@ -43,6 +42,7 @@ public abstract class AbstractStorageTest {
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
+
 
     @Before
     public void setUp() {
