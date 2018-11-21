@@ -16,13 +16,13 @@ public class ResumeTestData {
         resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
 
-        resume.addSection(SectionType.PERSONAL, new TextAbstractSection(
+        resume.addSection(SectionType.PERSONAL, new TextSection(
                 "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
-        resume.addSection(SectionType.OBJECTIVE, new TextAbstractSection(
+        resume.addSection(SectionType.OBJECTIVE, new TextSection(
                 "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
-        resume.addSection(SectionType.ACHIEVEMENT, new ListAbstractSection(
+        resume.addSection(SectionType.ACHIEVEMENT, new ListSection(
                 "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\"," +
                         " \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP)." +
                         " Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
@@ -32,7 +32,7 @@ public class ResumeTestData {
                         " Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery." +
                         " Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера."));
 
-        resume.addSection(SectionType.QUALIFICATIONS, new ListAbstractSection(
+        resume.addSection(SectionType.QUALIFICATIONS, new ListSection(
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle,",
