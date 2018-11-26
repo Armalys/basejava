@@ -38,7 +38,7 @@ public class ResumeTestData {
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle,",
                 "MySQL, SQLite, MS SQL, HSQLDB"));
 
-        resume.addSection(SectionType.EXPERIENCE, new OrganizationAbstractSection(
+        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Java Online Projects", "http://javaops.ru/",
                         new Organization.Position(2013, Month.of(10),
                                 "Автор проекта.",
@@ -57,7 +57,7 @@ public class ResumeTestData {
                                         " Реализация администрирования, статистики и мониторинга фреймворка." +
                                         " Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"))));
 
-        resume.addSection(SectionType.EDUCATION, new OrganizationAbstractSection(
+        resume.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("СПБНИУ ИТМО", "https://www.ifmo.ru",
                         new Organization.Position(2013, Month.of(9), 1996, Month.of(7),
                                 "Аспирантура(программист С,С++)", null),
