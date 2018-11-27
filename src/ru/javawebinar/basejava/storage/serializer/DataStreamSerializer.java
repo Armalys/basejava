@@ -135,7 +135,6 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                 }
             }
-            System.out.println(resume);
             return resume;
         }
     }
