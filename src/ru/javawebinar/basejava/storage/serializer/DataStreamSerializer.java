@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage.serializer;
 
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.util.LocalDateAdapter;
 
@@ -58,13 +59,13 @@ public class DataStreamSerializer implements StreamSerializer {
                                 try {
                                     dos.writeUTF(localDateAdapter.marshal(position.getStartDate()));
                                 } catch (Exception e) {
-                                    System.out.println("!!!!" + e);
+                                    throw new StorageException("Write error", e);
                                 }
 
                                 try {
                                     dos.writeUTF(localDateAdapter.marshal(position.getEndDate()));
                                 } catch (Exception e) {
-                                    System.out.println("!!!!" + e);
+                                    throw new StorageException("Write error", e);
                                 }
 
                                 dos.writeUTF(position.getTitle());
@@ -121,16 +122,14 @@ public class DataStreamSerializer implements StreamSerializer {
                         resume.addSection(SectionType.QUALIFICATIONS, new ListSection(listOfQualifications));
                         break;
                     case "EXPERIENCE":
-                        int sizeOfOrgOfExp = dis.readInt();
                         List<Organization> listOfOrganizations = new ArrayList<>();
-                        readOrganizations(dis, localDateAdapter, sizeOfOrgOfExp, listOfOrganizations);
+                        readOrganizations(dis, listOfOrganizations);
                         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(listOfOrganizations));
                         break;
 
                     case "EDUCATION":
-                        int sizeOfEdu = dis.readInt();
                         List<Organization> listOfEducations = new ArrayList<>();
-                        readOrganizations(dis, localDateAdapter, sizeOfEdu, listOfEducations);
+                        readOrganizations(dis, listOfEducations);
                         resume.addSection(SectionType.EDUCATION, new OrganizationSection(listOfEducations));
                         break;
                 }
@@ -139,7 +138,8 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private void readOrganizations(DataInputStream dis, LocalDateAdapter localDateAdapter, int sizeOfOrgOfExp, List<Organization> listOfOrg) throws IOException {
+    private void readOrganizations(DataInputStream dis, List<Organization> listOfOrg) throws IOException {
+        int sizeOfOrgOfExp = dis.readInt();
         for (int j = 0; j < sizeOfOrgOfExp; j++) {
             Organization organization = new Organization(new Link(dis.readUTF(), dis.readUTF()));
             int sizeOfStages = dis.readInt();
