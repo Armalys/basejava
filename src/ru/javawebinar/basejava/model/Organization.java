@@ -63,8 +63,8 @@ public class Organization implements Serializable {
 
         Organization that = (Organization) o;
 
-        if (homePage != null ? !homePage.equals(that.homePage) : that.homePage != null) return false;
-        return position != null ? position.equals(that.position) : that.position == null;
+        if (!Objects.equals(homePage, that.homePage)) return false;
+        return Objects.equals(position, that.position);
     }
 
     @Override
