@@ -40,7 +40,7 @@ public class ResumeTestData {
 
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Java Online Projects", "http://javaops.ru/",
-                        new Organization.Position(2013, Month.of(10),3000, Month.of(10),
+                        new Organization.Position(2013, Month.of(10),
                                 "Автор проекта.",
                                 "Создание, организация и проведение Java онлайн проектов и стажировок.")),
                 new Organization("Wrike", "https://www.wrike.com/",
@@ -60,23 +60,23 @@ public class ResumeTestData {
         resume.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("СПБНИУ ИТМО", "https://www.ifmo.ru",
                         new Organization.Position(2013, Month.of(9), 1996, Month.of(7),
-                                "Аспирантура(программист С,С++)", ""),
+                                "Аспирантура(программист С,С++)", null),
                         new Organization.Position(1987, Month.of(9), 1993, Month.of(9),
                                 "Инженер (программист Fortran,C)",
-                                "")),
+                                null)),
                 new Organization("Coursera", "https://www.coursera.org/course/progfun",
                         new Organization.Position(
                                 2013, Month.of(3), 2013, Month.of(5),
                                 "Functional Programming Principles in Scala by Martin Odersky",
-                                "")),
+                                null)),
                 new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
                         new Organization.Position(2011, Month.of(3), 2011, Month.of(4),
-                                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
-                                "")),
+                                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.",
+                                null)),
                 new Organization("Siemens AG", "http://www.siemens.ru/",
                         new Organization.Position(
                                 2005, Month.of(1), 2005, Month.of(4),
                                 "3 месяца обучения мобильным IN сетям (Берлин)",
-                                ""))));
+                                null))));
     }
 }

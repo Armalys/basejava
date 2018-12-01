@@ -14,16 +14,16 @@ public class MainDeadLock {
         new Thread(() -> {
             synchronized (firstObject) {
                 String threadName = Thread.currentThread().getName();
-                System.out.println(threadName + ": got " + secondObject + " monitor");
+                System.out.println(threadName + ": got " + firstObject + " monitor");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                System.out.println(threadName + ": trying to get " + firstObject + " monitor");
+                System.out.println(threadName + ": trying to get " + secondObject + " monitor");
                 synchronized (secondObject) {
-                    System.out.println(threadName + ": got " + firstObject + " monitor");
+                    System.out.println(threadName + ": got " + secondObject + " monitor");
                 }
             }
         }).start();

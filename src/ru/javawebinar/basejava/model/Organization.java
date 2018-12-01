@@ -109,7 +109,7 @@ public class Organization implements Serializable {
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
-            this.description = description;
+            this.description = Objects.requireNonNullElse(description, "");
         }
 
         public LocalDate getStartDate() {
@@ -154,7 +154,7 @@ public class Organization implements Serializable {
             if (!startDate.equals(position.startDate)) return false;
             if (!endDate.equals(position.endDate)) return false;
             if (!title.equals(position.title)) return false;
-            return description != null ? description.equals(position.description) : position.description == null;
+            return Objects.equals(description, position.description);
         }
 
         @Override
