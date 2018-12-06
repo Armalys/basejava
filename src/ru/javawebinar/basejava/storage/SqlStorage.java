@@ -3,7 +3,6 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.sql.ConnectionFactory;
 import ru.javawebinar.basejava.util.SqlHelper;
 
 import java.sql.DriverManager;
@@ -16,8 +15,7 @@ public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        ConnectionFactory connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        sqlHelper = new SqlHelper(connectionFactory);
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
@@ -43,7 +41,8 @@ public class SqlStorage implements Storage {
             int i = ps.executeUpdate();
             if (i == 0) {
                 throw new NotExistStorageException(resume.getUuid());
-            } else return null;
+            }
+            return null;
         });
     }
 
@@ -65,7 +64,8 @@ public class SqlStorage implements Storage {
             ps.setString(1, uuid);
             if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(uuid);
-            } else return null;
+            }
+            return null;
         });
     }
 
@@ -73,9 +73,11 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> resumeList = new ArrayList<>();
-        sqlHelper.sqlHelping("SELECT * FROM resume", ps -> {
+        sqlHelper.sqlHelping("SELECT * FROM resume ORDER BY uuid ASC", ps -> {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) resumeList.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+            while (rs.next()) {
+                resumeList.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+            }
             return null;
         });
         return resumeList;
