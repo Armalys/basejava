@@ -15,10 +15,10 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public void sqlHelping(String sql, SqlHelp sqlHelp) {
+    public Object sqlHelping(String sql, SqlHelp sqlHelp) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
-            sqlHelp.sqlHelp(ps);
+            return sqlHelp.sqlHelp(ps);
         } catch (SQLException e) {
             throw new ExistStorageException(e);
         } catch (NotExistStorageException e) {
@@ -27,6 +27,6 @@ public class SqlHelper {
     }
 
     public interface SqlHelp {
-        void sqlHelp(PreparedStatement ps) throws SQLException;
+        Object sqlHelp(PreparedStatement ps) throws SQLException;
     }
 }
