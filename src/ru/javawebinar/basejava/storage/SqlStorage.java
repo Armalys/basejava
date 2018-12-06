@@ -58,9 +58,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        sqlHelper.doSet("DELETE FROM resume WHERE uuid=?", ps -> {
-            ps.setString(1, uuid);
-        });
+        sqlHelper.doSet("DELETE FROM resume WHERE uuid=?", ps -> ps.setString(1, uuid));
     }
 
     @Override
@@ -68,9 +66,7 @@ public class SqlStorage implements Storage {
         List<Resume> resumeList = new ArrayList<>();
         sqlHelper.doGet("SELECT * FROM resume", ps -> {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                resumeList.add(new Resume(rs.getString(1), rs.getString(1)));
-            }
+            while (rs.next()) resumeList.add(new Resume(rs.getString(1), rs.getString(1)));
             return null;
         });
         return resumeList;
