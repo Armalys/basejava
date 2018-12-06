@@ -1,86 +1,89 @@
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.ConnectionFactory;
+import ru.javawebinar.basejava.util.SqlHelper;
 
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
     public final ConnectionFactory connectionFactory;
 
+    public SqlHelper sqlHelper;
+
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-    }
-
-    public ConnectionFactory getConnectionFactory() {
-        return connectionFactory;
+        sqlHelper = new SqlHelper(connectionFactory);
     }
 
     @Override
     public void clear() {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement ps = connection.prepareStatement("DELETE FROM resume")) {
-            ps.execute();
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        sqlHelper.doSet("DELETE FROM resume", preparedStatement -> {});
 
     }
 
     @Override
     public void save(Resume resume) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement ps = connection.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
+        sqlHelper.doSet("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
             ps.setString(1, resume.getUuid());
             ps.setString(2, resume.getFullName());
-            ps.execute();
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        });
     }
 
     @Override
     public void update(Resume resume) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement ps = connection.prepareStatement("UPDATE resume SET uuid=?, full_name=?")) {
+        sqlHelper.doSet("UPDATE resume SET uuid=?,full_name=? where uuid=?", ps -> {
             ps.setString(1, resume.getUuid());
             ps.setString(2, resume.getFullName());
-            ps.execute();
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+            ps.setString(3, resume.getUuid());
+        });
     }
 
     @Override
     public Resume get(String uuid) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement ps = connection.prepareStatement("SELECT  * FROM resume r WHERE r.uuid=?")) {
+        return (Resume) sqlHelper.doGet("SELECT  * FROM resume r WHERE r.uuid=?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
             return new Resume(uuid, rs.getString("full_name"));
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        });
+
     }
 
     @Override
     public void delete(String uuid) {
-
+        sqlHelper.doSet("DELETE FROM resume WHERE uuid=?", ps -> {
+            ps.setString(1, uuid);
+        });
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return null;
+        List<Resume> resumeList = new ArrayList<>();
+        sqlHelper.doGet("SELECT * FROM resume", ps -> {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                resumeList.add(new Resume(rs.getString(1), rs.getString(1)));
+            }
+            return null;
+        });
+        return resumeList;
     }
 
     @Override
     public int size() {
-        return 0;
+        return (int) sqlHelper.doGet("SELECT count(*) FROM resume", ps -> {
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                return 0;
+            }
+            return rs.getInt(1);
+        });
     }
 }

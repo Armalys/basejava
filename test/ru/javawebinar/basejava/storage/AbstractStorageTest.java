@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static ru.javawebinar.basejava.ResumeTestData.fillData;
 
 public abstract class AbstractStorageTest {
     private static final String UUID_1 = "uuid1";
@@ -35,9 +34,9 @@ public abstract class AbstractStorageTest {
         RESUME_2 = new Resume(UUID_2, "full name 2");
         RESUME_3 = new Resume(UUID_3, "full name 3");
         RESUME_DUMMY = new Resume(DUMMY, "full name dummy");
-        fillData(RESUME_1);
-        fillData(RESUME_2);
-        fillData(RESUME_3);
+//        fillData(RESUME_1);
+//        fillData(RESUME_2);
+//        fillData(RESUME_3);
     }
 
     protected AbstractStorageTest(Storage storage) {
