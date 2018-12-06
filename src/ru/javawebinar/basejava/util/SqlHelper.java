@@ -15,7 +15,7 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public Object sqlHelping(String sql, SqlHelp sqlHelp) {
+    public <T> T sqlHelping(String sql, SqlHelp<T> sqlHelp) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             return sqlHelp.sqlHelp(ps);
@@ -26,7 +26,7 @@ public class SqlHelper {
         }
     }
 
-    public interface SqlHelp {
-        Object sqlHelp(PreparedStatement ps) throws SQLException;
+    public interface SqlHelp<T> {
+        T sqlHelp(PreparedStatement ps) throws SQLException;
     }
 }

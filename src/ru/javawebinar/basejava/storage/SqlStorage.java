@@ -9,6 +9,7 @@ import ru.javawebinar.basejava.util.SqlHelper;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +28,13 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        sqlHelper.sqlHelping("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
-            ps.setString(1, resume.getUuid());
-            ps.setString(2, resume.getFullName());
-            return ps.execute();
+        sqlHelper.sqlHelping("INSERT INTO resume (uuid, full_name) VALUES (?,?)", new SqlHelper.SqlHelp<Boolean>() {
+            @Override
+            public Boolean sqlHelp(PreparedStatement ps) throws SQLException {
+                ps.setString(1, resume.getUuid());
+                ps.setString(2, resume.getFullName());
+                return ps.execute();
+            }
         });
     }
 
@@ -40,7 +44,8 @@ public class SqlStorage implements Storage {
             ps.setString(1, resume.getUuid());
             ps.setString(2, resume.getFullName());
             ps.setString(3, resume.getUuid());
-            if (ps.executeUpdate() == 0) {
+            int i = ps.executeUpdate();
+            if (i == 0) {
                 throw new NotExistStorageException(resume.getUuid());
             } else return null;
         });
@@ -48,7 +53,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return (Resume) sqlHelper.sqlHelping("SELECT  * FROM resume r WHERE r.uuid=?", ps -> {
+        return sqlHelper.sqlHelping("SELECT  * FROM resume r WHERE r.uuid=?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -82,7 +87,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        return (int) sqlHelper.sqlHelping("SELECT count(*) FROM resume", ps -> {
+        return sqlHelper.sqlHelping("SELECT count(*) FROM resume", ps -> {
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new StorageException("resume is empty");
