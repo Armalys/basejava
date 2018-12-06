@@ -9,7 +9,6 @@ import ru.javawebinar.basejava.util.SqlHelper;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +27,10 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        sqlHelper.sqlHelping("INSERT INTO resume (uuid, full_name) VALUES (?,?)", new SqlHelper.SqlHelp<Boolean>() {
-            @Override
-            public Boolean sqlHelp(PreparedStatement ps) throws SQLException {
-                ps.setString(1, resume.getUuid());
-                ps.setString(2, resume.getFullName());
-                return ps.execute();
-            }
+        sqlHelper.sqlHelping("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
+            ps.setString(1, resume.getUuid());
+            ps.setString(2, resume.getFullName());
+            return ps.execute();
         });
     }
 
