@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.util.SqlHelper;
+import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -25,21 +25,21 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        sqlHelper.sqlHelping("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
+        sqlHelper.<Void>sqlHelping("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
             ps.setString(1, resume.getUuid());
             ps.setString(2, resume.getFullName());
-            return ps.execute();
+            ps.execute();
+            return null;
         });
     }
 
     @Override
     public void update(Resume resume) {
-        sqlHelper.sqlHelping("UPDATE resume SET uuid=?, full_name=? WHERE uuid=?", ps -> {
+        sqlHelper.<Void>sqlHelping("UPDATE resume SET uuid=?, full_name=? WHERE uuid=?", ps -> {
             ps.setString(1, resume.getUuid());
             ps.setString(2, resume.getFullName());
             ps.setString(3, resume.getUuid());
-            int i = ps.executeUpdate();
-            if (i == 0) {
+            if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(resume.getUuid());
             }
             return null;
@@ -60,7 +60,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        sqlHelper.sqlHelping("DELETE FROM resume WHERE uuid=?", ps -> {
+        sqlHelper.<Void>sqlHelping("DELETE FROM resume WHERE uuid=?", ps -> {
             ps.setString(1, uuid);
             if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(uuid);
@@ -73,7 +73,7 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> resumeList = new ArrayList<>();
-        sqlHelper.sqlHelping("*SELECT* FROM resume ORDER BY full_name, uuid", ps -> {
+        sqlHelper.<Void>sqlHelping("SELECT * FROM resume ORDER BY full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 resumeList.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
