@@ -20,6 +20,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_1 = UUID.randomUUID().toString();
     private static final String UUID_2 = UUID.randomUUID().toString();
     private static final String UUID_3 = UUID.randomUUID().toString();
+
+//    private static final String UUID_1 = "uuid1";
+//    private static final String UUID_2 = "uuid2";
+//    private static final String UUID_3 = "uuid3";
     private static final String DUMMY = "dummy";
 
     private static final Resume RESUME_1;
@@ -80,6 +84,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
+        fillData(newResume);
         storage.update(newResume);
         assertTrue(newResume.equals(storage.get(UUID_1)));
     }

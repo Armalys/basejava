@@ -13,16 +13,20 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
+
+    public void execute(String sql) {
+        execute(sql, PreparedStatement::execute);
+    }
     public <T> T execute(String sql, SqlExecutor<T> executor) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             return executor.execute(ps);
         } catch (SQLException e) {
             throw ExceptionUtil.convertException(e);
         }
     }
 
-    public <T> T transactionExecute(SqlTransaction<T> executor) {
+    public <T> T transactionalExecute(SqlTransaction<T> executor) {
         try (Connection connection = connectionFactory.getConnection()) {
             try {
                 connection.setAutoCommit(false);
