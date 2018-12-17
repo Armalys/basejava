@@ -7,6 +7,7 @@ import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,13 +90,25 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume r ORDER BY full_name,uuid", ps -> {
+        return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c on r.uuid = c.resume_uuid ORDER BY full_name,uuid", ps -> {
             ResultSet rs = ps.executeQuery();
             List<Resume> resumes = new ArrayList<>();
+            Map<Resume, Map<ContactType, String>> mapResumes = new HashMap<>();
+            Map<ContactType, String> contacts = new HashMap<>();
             while (rs.next()) {
                 String uuid = rs.getString("uuid");
-                resumes.add(get(uuid));
+                String fullName = rs.getString("full_name");
+                ContactType contactType = ContactType.valueOf(rs.getString("type"));
+                String value = rs.getString("value");
+                contacts.put(contactType, value);
+                mapResumes.put(new Resume(uuid, fullName), contacts);
             }
+
+            for (Map.Entry<Resume, Map<ContactType, String>> entry : mapResumes.entrySet()) {
+                entry.getKey().setContacts(entry.getValue());
+                resumes.add(entry.getKey());
+            }
+
             return resumes;
         });
     }
