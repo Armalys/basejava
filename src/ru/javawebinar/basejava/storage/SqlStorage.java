@@ -6,10 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
@@ -92,7 +89,7 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c on r.uuid = c.resume_uuid ORDER BY full_name,uuid", ps -> {
             ResultSet rs = ps.executeQuery();
-            List<Resume> resumes = new ArrayList<>();
+            List<Resume> listResumes = new ArrayList<>();
             Map<Resume, Map<ContactType, String>> mapResumes = new HashMap<>();
             Map<ContactType, String> contacts = new HashMap<>();
             while (rs.next()) {
@@ -106,10 +103,10 @@ public class SqlStorage implements Storage {
 
             for (Map.Entry<Resume, Map<ContactType, String>> entry : mapResumes.entrySet()) {
                 entry.getKey().setContacts(entry.getValue());
-                resumes.add(entry.getKey());
+                listResumes.add(entry.getKey());
             }
-
-            return resumes;
+            listResumes.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
+            return listResumes;
         });
     }
 
