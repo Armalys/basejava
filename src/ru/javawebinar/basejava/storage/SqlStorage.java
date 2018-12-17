@@ -25,9 +25,9 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        sqlHelper.<Void>transactionalExecute(conn -> {
-                    executeResume(resume, "INSERT INTO resume (full_name, uuid) VALUES (?,?)", conn);
-                    executeContact(resume, "INSERT INTO contact (type, value, resume_uuid) VALUES (?,?,?)", conn);
+        sqlHelper.<Void>transactionalExecute(connection -> {
+                    executeResume(resume, "INSERT INTO resume (full_name, uuid) VALUES (?,?)", connection);
+                    executeContact(resume, connection);
                     return null;
                 }
         );
@@ -41,7 +41,7 @@ public class SqlStorage implements Storage {
                         throw new NotExistStorageException(resume.getUuid());
                     }
                     sqlHelper.execute("DELETE FROM contact");
-                    executeContact(resume, "INSERT INTO contact (type, value, resume_uuid) VALUES (?,?,?)", connection);
+                    executeContact(resume, connection);
                     return null;
                 }
         );
@@ -126,8 +126,8 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void executeContact(Resume resume, String sql, Connection conn) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+    private void executeContact(Resume resume, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (type, value, resume_uuid) VALUES (?,?,?)")) {
             for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
                 ps.setString(1, entry.getKey().name());
                 ps.setString(2, entry.getValue());
