@@ -12,7 +12,7 @@ public class ResumeTestData {
         resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
         resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
+//        resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
 
 //        resume.addSection(SectionType.PERSONAL, new TextSection(
