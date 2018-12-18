@@ -6,7 +6,10 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
@@ -40,16 +43,20 @@ public class SqlStorage implements Storage {
                     if (i == 0) {
                         throw new NotExistStorageException(resume.getUuid());
                     }
-                    sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", ps -> {
-                        ps.setString(1, resume.getUuid());
-                        ps.execute();
-                        return null;
-                    });
-
+                    clearContacts(resume,connection);
                     executeContact(resume, connection);
                     return null;
                 }
         );
+    }
+
+    private void clearContacts(Resume resume, Connection connection) {
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")){
+            ps.setString(1,resume.getUuid());
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -94,7 +101,7 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c on r.uuid = c.resume_uuid ORDER BY full_name,uuid", ps -> {
             ResultSet rs = ps.executeQuery();
-            Map<String, Resume> mapResumes = new HashMap<>();
+            Map<String, Resume> mapResumes = new LinkedHashMap<>();
 
             while (rs.next()) {
                 String uuid = rs.getString("uuid");
@@ -108,10 +115,7 @@ public class SqlStorage implements Storage {
                 String value = rs.getString("value");
                 resume.addContact(contactType, value);
             }
-
-            List<Resume> listResumes = new ArrayList<>(mapResumes.values());
-            listResumes.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
-            return listResumes;
+            return new ArrayList<>(mapResumes.values());
         });
     }
 
