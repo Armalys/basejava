@@ -8,20 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "2121");
-
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-
-
-    private static final Resume RESUME_1 = new Resume(UUID_1, "full name 1");
-    private static final Resume RESUME_2 = new Resume(UUID_2, "full name 2");
-    private static final Resume RESUME_3 = new Resume(UUID_3, "full name 3");
-
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
@@ -32,10 +21,24 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-Type", "text/html; charset=UTF-8");
 
-        Resume resume = storage.getAllSorted().get(1);
-//        String uuid = request.getParameter("uuid");
+        String uuid = request.getParameter("uuid");
+        if (uuid == null) {
+            response.getWriter().write("<table class=\"tftable\" border=\"1\">" +
+                    " <tr><th> uuid</th><th>" +
+                    "full name</th></tr>");
+            for (Resume resume : storage.getAllSorted()) {
+                response.getWriter().write("<tr><td>" + resume.getUuid() + "</td><td>" +
+                        resume.getFullName() + "</td></tr>");
+            }
+            response.getWriter().write("</table>");
+        } else {
 
-        response.getWriter().write(resume.getUuid() + " " + resume.getFullName());
 
+            Resume resume = storage.get(uuid);
+            response.getWriter().write("<table class=\"tftable\" border=\"1\">\n" +
+                    "<tr><th>uuid</th><th>full name</th></tr>\n" +
+                    "<tr><td>" + resume.getUuid() + "</td><td>" + resume.getFullName() + "</td></tr>\n" +
+                    "</table>");
+        }
     }
 }
