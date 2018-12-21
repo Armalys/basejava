@@ -5,8 +5,7 @@ import org.junit.Test;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static ru.javawebinar.basejava.ResumeTestData.fillData;
 
 public abstract class AbstractStorageTest {
@@ -22,7 +20,7 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = UUID.randomUUID().toString();
     private static final String UUID_3 = UUID.randomUUID().toString();
 
-//    private static final String UUID_1 = "uuid1";
+    //    private static final String UUID_1 = "uuid1";
 //    private static final String UUID_2 = "uuid2";
 //    private static final String UUID_3 = "uuid3";
     private static final String DUMMY = "dummy";
@@ -85,11 +83,11 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
-        fillData(newResume);
-        newResume.addContact(ContactType.HOMEPAGE,"TEST HOME PAGE");
+        newResume.addContact(ContactType.HOMEPAGE, "TEST HOME PAGE");
+        newResume.addSection(SectionType.PERSONAL, new TextSection("TEST PERSONAL"));
+        newResume.addSection(SectionType.ACHIEVEMENT, new ListSection("TEST 1", "TEST 2", "TEST 3"));
         storage.update(newResume);
-
-        assertTrue(newResume.equals(storage.get(UUID_1)));
+        assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
