@@ -1,16 +1,30 @@
 CREATE TABLE resume
 (
-  uuid      VARCHAR(36) PRIMARY KEY NOT NULL,
-  full_name TEXT                    NOT NULL
+  uuid      VARCHAR(36) NOT NULL
+    CONSTRAINT resume_pkey
+      PRIMARY KEY,
+  full_name TEXT        NOT NULL
 );
+
+ALTER TABLE resume
+  OWNER TO postgres;
 
 CREATE TABLE contact
 (
-  id          SERIAL,
-  resume_uuid VARCHAR(36) NOT NULL REFERENCES resume (uuid) ON DELETE CASCADE,
-  type        TEXT        NOT NULL,
-  value       TEXT        NOT NULL
+  id          SERIAL      NOT NULL,
+  resume_uuid VARCHAR(36) NOT NULL
+    CONSTRAINT contact_resume_uuid_fk
+      REFERENCES resume
+      ON DELETE CASCADE,
+  type        TEXT,
+  value       TEXT
 );
+
+ALTER TABLE contact
+  OWNER TO postgres;
+
+CREATE UNIQUE INDEX contact_uuid_type_index
+  ON contact (resume_uuid, type);
 
 CREATE TABLE section
 (
@@ -26,15 +40,6 @@ CREATE TABLE section
 ALTER TABLE section
   OWNER TO postgres;
 
+CREATE UNIQUE INDEX section_resume_uuid_type_section_uindex
+  ON section (resume_uuid, type_section);
 
-
-ALTER TABLE section
-  OWNER TO postgres;
-
-CREATE UNIQUE INDEX section_type_uindex
-  ON section (type_section);
-
-
-
-CREATE UNIQUE INDEX contact_uuid_type_index
-  ON contact (resume_uuid, type);

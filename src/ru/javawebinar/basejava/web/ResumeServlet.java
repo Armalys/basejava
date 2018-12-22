@@ -1,7 +1,7 @@
 package ru.javawebinar.basejava.web;
 
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.SqlStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 import javax.servlet.http.HttpServlet;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ResumeServlet extends HttpServlet {
-    private Storage storage = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "2121");
+    private Storage storage = Config.get().getStorage();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
