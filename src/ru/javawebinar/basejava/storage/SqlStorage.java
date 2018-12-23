@@ -5,10 +5,7 @@ import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
@@ -91,8 +88,8 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumeList = new ArrayList<>();
 
+        Map<String, Resume> resumeMap = new LinkedHashMap<>();
 
         sqlHelper.transactionalExecute(connection -> {
             try (PreparedStatement psResume = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name,uuid")) {
@@ -101,83 +98,32 @@ public class SqlStorage implements Storage {
                 while (rsResume.next()) {
                     String uuid = rsResume.getString("uuid");
                     String full_name = rsResume.getString("full_name");
-                    Resume resume = new Resume(uuid, full_name);
-                    resumeList.add(resume);
+                    resumeMap.put(uuid, new Resume(uuid, full_name));
                 }
 
                 try (PreparedStatement psContacts = connection.prepareStatement("SELECT * FROM contact")) {
                     ResultSet rsContacts = psContacts.executeQuery();
                     while (rsContacts.next()) {
-                        for (Resume resume : resumeList) {
-                            addContact(rsContacts, resume);
-                        }
+                        String uuid = rsContacts.getString("resume_uuid");
+                        Resume resume = resumeMap.get(uuid);
+                        addContact(rsContacts, resume);
                     }
                 }
 
                 try (PreparedStatement psSection = connection.prepareStatement("SELECT * FROM section")) {
                     ResultSet rsSection = psSection.executeQuery();
                     while (rsSection.next()) {
-                        for (Resume resume : resumeList) {
-                            addSection(rsSection, resume);
-                        }
+                        rsSection.getString("resume_uuid");
+                        String uuid = rsSection.getString("resume_uuid");
+                        Resume resume = resumeMap.get(uuid);
+                        addSection(rsSection, resume);
                     }
                 }
             }
             return null;
         });
-        return resumeList;
+        return new ArrayList<>(resumeMap.values());
     }
-
-//        List<Resume> resumeList = new ArrayList<>();
-//        sqlHelper.transactionalExecute(connection -> {
-//            try (PreparedStatement psResume = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name,uuid")) {
-//                ResultSet rsResume = psResume.executeQuery();
-//                Resume resume;
-//                while (rsResume.next()) {
-//                    String uuid = rsResume.getString("uuid");
-//                    String full_name = rsResume.getString("full_name");
-//                    resume = new Resume(uuid, full_name);
-//
-//                    try (PreparedStatement psSection = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid=?")) {
-//                        psSection.setString(1, uuid);
-//                        ResultSet rsSection = psSection.executeQuery();
-//                        while (rsSection.next()) {
-//                            addSection(rsSection, resume);
-//                        }
-//                    }
-//
-//                    try (PreparedStatement psContacts = connection.prepareStatement("SELECT * FROM contact WHERE resume_uuid=?")) {
-//                        psContacts.setString(1, uuid);
-//                        ResultSet rsContacts = psContacts.executeQuery();
-//                        while (rsContacts.next()) {
-//                            addContact(rsContacts, resume);
-//                        }
-//                    }
-//                    resumeList.add(resume);
-//                }
-//            }
-//            return null;
-//        });
-
-
-//        return sqlHelper.execute("SELECT * FROM resume r" +
-//                " LEFT JOIN contact c" +
-//                " ON r.uuid = c.resume_uuid" +
-//                " LEFT JOIN section AS s" +
-//                "        ON r.uuid = s.resume_uuid" +
-//                " ORDER BY full_name,uuid", ps -> {
-//            ResultSet rs = ps.executeQuery();
-//            Map<String, Resume> mapResumes = new LinkedHashMap<>();
-//            while (rs.next()) {
-//                String uuid = rs.getString("uuid");
-//                String fullName = rs.getString("full_name");
-//                Resume resume = mapResumes.computeIfAbsent(uuid, s -> new Resume(uuid, fullName));
-//                addContact(rs, resume);
-//                addSection(rs, resume);
-//            }
-//            return new ArrayList<>(mapResumes.values());
-//        });
-//    }
 
     @Override
     public int size() {
