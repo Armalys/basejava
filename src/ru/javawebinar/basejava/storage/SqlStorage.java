@@ -94,30 +94,29 @@ public class SqlStorage implements Storage {
         sqlHelper.transactionalExecute(connection -> {
             try (PreparedStatement psResume = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name,uuid")) {
                 ResultSet rsResume = psResume.executeQuery();
-
                 while (rsResume.next()) {
                     String uuid = rsResume.getString("uuid");
                     String full_name = rsResume.getString("full_name");
                     resumeMap.put(uuid, new Resume(uuid, full_name));
                 }
+            }
 
-                try (PreparedStatement psContacts = connection.prepareStatement("SELECT * FROM contact")) {
-                    ResultSet rsContacts = psContacts.executeQuery();
-                    while (rsContacts.next()) {
-                        String uuid = rsContacts.getString("resume_uuid");
-                        Resume resume = resumeMap.get(uuid);
-                        addContact(rsContacts, resume);
-                    }
+            try (PreparedStatement psContacts = connection.prepareStatement("SELECT * FROM contact")) {
+                ResultSet rsContacts = psContacts.executeQuery();
+                while (rsContacts.next()) {
+                    String uuid = rsContacts.getString("resume_uuid");
+                    Resume resume = resumeMap.get(uuid);
+                    addContact(rsContacts, resume);
                 }
+            }
 
-                try (PreparedStatement psSection = connection.prepareStatement("SELECT * FROM section")) {
-                    ResultSet rsSection = psSection.executeQuery();
-                    while (rsSection.next()) {
-                        rsSection.getString("resume_uuid");
-                        String uuid = rsSection.getString("resume_uuid");
-                        Resume resume = resumeMap.get(uuid);
-                        addSection(rsSection, resume);
-                    }
+            try (PreparedStatement psSection = connection.prepareStatement("SELECT * FROM section")) {
+                ResultSet rsSection = psSection.executeQuery();
+                while (rsSection.next()) {
+                    rsSection.getString("resume_uuid");
+                    String uuid = rsSection.getString("resume_uuid");
+                    Resume resume = resumeMap.get(uuid);
+                    addSection(rsSection, resume);
                 }
             }
             return null;
