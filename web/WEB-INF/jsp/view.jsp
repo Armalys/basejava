@@ -1,3 +1,5 @@
+<%@ page import="ru.javawebinar.basejava.model.ListSection" %>
+<%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -17,6 +19,33 @@
                          type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactType,java.lang.String>"/>
             <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
         </c:forEach>
+    </p>
+
+    <p>
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType,ru.javawebinar.basejava.model.AbstractSection>"/>
+        <b><%=sectionEntry.getKey().getTitle()%></b><br/>
+
+        <c:choose>
+        <c:when test="${sectionEntry.key.equals(SectionType.OBJECTIVE)}">
+            <%=sectionEntry.getValue()%><br/>
+        </c:when>
+        <c:when test="${sectionEntry.key.equals(SectionType.PERSONAL)}">
+            <%=sectionEntry.getValue()%><br/>
+        </c:when>
+        <c:when test="${sectionEntry.key.equals(SectionType.ACHIEVEMENT)}">
+            <c:forEach var="item" items="<%=((ListSection) sectionEntry.getValue()).getItems()%>">
+                <li>${item}</li>
+            </c:forEach>
+        </c:when>
+        <c:when test="${sectionEntry.key.equals(SectionType.QUALIFICATIONS)}">
+            <c:forEach var="item" items="<%=((ListSection) sectionEntry.getValue()).getItems()%>">
+                <li>${item}</li>
+            </c:forEach>
+        </c:when>
+    </c:choose>
+    </c:forEach>
     </p>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
