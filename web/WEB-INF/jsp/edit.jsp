@@ -1,4 +1,5 @@
 <%@ page import="ru.javawebinar.basejava.model.ContactType" %>
+<%@ page import="ru.javawebinar.basejava.model.ListSection" %>
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -28,22 +29,23 @@
 
         <h3>Sections: </h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
+            <c:set var="section" value="${resume.getSection(type)}"/>
+            <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
             <dl>
                 <dt>${type.name()}</dt>
+                <c:choose>
+                    <c:when test="${type.equals(SectionType.OBJECTIVE) || type.equals(SectionType.PERSONAL)}">
+                        <dd><textarea rows="5" cols="45">
+                        <dd><input type="text" name="${type.name()}" size="30" value="${resume.getSection(type)}"></dd>
+                        </textarea></dd>
+                    </c:when>
 
-                <dd><input type="text" name="${type.name()}" size="100" value="${resume.getSection(type)}"></dd>
-
-                <%--<c:choose>--%>
-                    <%--<c:when test="${type.equals(SectionType.OBJECTIVE) || type.equals(SectionType.PERSONAL)}">--%>
-                        <%--<dd><input type="text" name="${type.name()}" size="100" value="${resume.getSection(type)}"></dd>--%>
-                    <%--</c:when>--%>
-
-                    <%--<c:when test="${type.equals(SectionType.ACHIEVEMENT) || type.equals(SectionType.QUALIFICATIONS)}">--%>
-                        <%--<c:forEach var="item" items="${resume.getSection(type)}">--%>
-                                <%--<dd><input type="text" size="30" value="${item}"></dd>--%>
-                        <%--</c:forEach>--%>
-                    <%--</c:when>--%>
-                <%--</c:choose>--%>
+                    <c:when test="${type.equals(SectionType.ACHIEVEMENT) || type.equals(SectionType.QUALIFICATIONS)}">
+                        <dd><textarea rows="10" cols="45">
+                            <%=String.join("\n", ((ListSection) section).getItems())%>
+                        </textarea></dd>
+                    </c:when>
+                </c:choose>
             </dl>
         </c:forEach>
         <hr>
