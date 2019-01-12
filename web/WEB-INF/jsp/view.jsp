@@ -26,20 +26,11 @@
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType,ru.javawebinar.basejava.model.AbstractSection>"/>
         <b><%=sectionEntry.getKey().getTitle()%></b><br/>
-
         <c:choose>
-        <c:when test="${sectionEntry.key.equals(SectionType.OBJECTIVE)}">
+        <c:when test="${sectionEntry.key.equals(SectionType.OBJECTIVE) || sectionEntry.key.equals(SectionType.PERSONAL)}">
             <%=sectionEntry.getValue()%><br/>
         </c:when>
-        <c:when test="${sectionEntry.key.equals(SectionType.PERSONAL)}">
-            <%=sectionEntry.getValue()%><br/>
-        </c:when>
-        <c:when test="${sectionEntry.key.equals(SectionType.ACHIEVEMENT)}">
-            <c:forEach var="item" items="<%=((ListSection) sectionEntry.getValue()).getItems()%>">
-                <li>${item}</li>
-            </c:forEach>
-        </c:when>
-        <c:when test="${sectionEntry.key.equals(SectionType.QUALIFICATIONS)}">
+        <c:when test="${sectionEntry.key.equals(SectionType.ACHIEVEMENT) || sectionEntry.key.equals(SectionType.QUALIFICATIONS)}">
             <c:forEach var="item" items="<%=((ListSection) sectionEntry.getValue()).getItems()%>">
                 <li>${item}</li>
             </c:forEach>
