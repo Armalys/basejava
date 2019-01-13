@@ -35,8 +35,8 @@
                 <dt>${type.name()}</dt>
                 <c:choose>
                     <c:when test="${type.equals(SectionType.OBJECTIVE) || type.equals(SectionType.PERSONAL)}">
-                        <dd><textarea rows="5" cols="45">
-
+                        <dd><textarea rows="4" cols="45">
+                            <%=section%>
                         </textarea></dd>
                     </c:when>
 
