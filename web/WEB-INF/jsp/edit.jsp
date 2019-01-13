@@ -30,13 +30,13 @@
         <h3>Sections: </h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSection(type)}"/>
-            <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
+            <jsp:useBean id="section"  type="ru.javawebinar.basejava.model.AbstractSection"/>
             <dl>
                 <dt>${type.name()}</dt>
                 <c:choose>
                     <c:when test="${type.equals(SectionType.OBJECTIVE) || type.equals(SectionType.PERSONAL)}">
                         <dd><textarea rows="5" cols="45">
-                        <dd><input type="text" name="${type.name()}" size="30" value="${resume.getSection(type)}"></dd>
+
                         </textarea></dd>
                     </c:when>
 
@@ -45,6 +45,8 @@
                             <%=String.join("\n", ((ListSection) section).getItems())%>
                         </textarea></dd>
                     </c:when>
+                    <c:otherwise>
+                    </c:otherwise>
                 </c:choose>
             </dl>
         </c:forEach>

@@ -47,6 +47,8 @@ public class ResumeServlet extends HttpServlet {
                     case QUALIFICATIONS:
                         resume.addSection(type, new ListSection(value.split("\n")));
                         break;
+                    default:
+                        break;
                 }
             } else {
                 resume.getSections().remove(type);
