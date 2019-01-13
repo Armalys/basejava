@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage; // Config.get().getStorage();
@@ -86,18 +87,18 @@ public class ResumeServlet extends HttpServlet {
                         switch (sectionType) {
                             case OBJECTIVE:
                             case PERSONAL:
-                                resume.addSection(sectionType, new TextSection());
+                                resume.addSection(sectionType, new TextSection(""));
                                 break;
                             case ACHIEVEMENT:
                             case QUALIFICATIONS:
-                                resume.addSection(sectionType, new ListSection());
+                                resume.addSection(sectionType, new ListSection(new ArrayList<>()));
                                 break;
-                            case EXPERIENCE:
-                            case EDUCATION:
-                                resume.addSection(sectionType, new OrganizationSection(
-                                        new Organization()
-                                ));
-                                break;
+//                            case EXPERIENCE:
+//                            case EDUCATION:
+//                                resume.addSection(sectionType, new OrganizationSection(
+//                                        new Organization(new Link(), new ArrayList<>())
+//                                ));
+//                                break;
                         }
                     }
                 }
